@@ -11,132 +11,135 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Guía Turística',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        fontFamily: 'Roboto',
-      ),
-      home: const IndexPage(),
+      home: const PriceQRPage(),
     );
   }
 }
 
-class IndexPage extends StatelessWidget {
-  const IndexPage({super.key});
+class PriceQRPage extends StatelessWidget {
+  const PriceQRPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final categorias = [
-      {"nombre": "Hoteles", "icono": Icons.hotel, "color": Colors.teal},
-      {"nombre": "Restaurantes", "icono": Icons.restaurant, "color": Colors.deepOrange},
-      {"nombre": "Bares", "icono": Icons.local_bar, "color": Colors.purple},
-      {"nombre": "Eventos", "icono": Icons.event, "color": Colors.blue},
-      {"nombre": "Playas", "icono": Icons.beach_access, "color": Colors.amber},
-      {"nombre": "Cultura", "icono": Icons.museum, "color": Colors.green},
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.teal,
-        title: const Text(
-          "Guía Turística",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Encabezado superior
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                "PriceQR",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "¡Bienvenido! 👋",
-                  style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Descubre lo mejor de tu destino con nuestra guía personalizada.",
-                  style: TextStyle(fontSize: 14, color: Colors.white70),
-                ),
-              ],
-            ),
-          ),
+              const SizedBox(height: 20),
+              const CircleAvatar(
+                radius: 40,
+                child: Icon(Icons.person, size: 50),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Negocio",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const Text(
+                "Vendedor autorizado desde 2020",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              const SizedBox(height: 30),
 
-          const SizedBox(height: 20),
+              // Lista de productos
+              const ProductTile(
+                icon: Icons.shopping_bag_outlined,
+                name: "Producto N.",
+                price: 1000,
+              ),
+              const ProductTile(
+                icon: Icons.egg_outlined,
+                name: "Producto N.",
+                price: 2000,
+              ),
+              const ProductTile(
+                icon: Icons.restaurant_outlined,
+                name: "Producto N.",
+                price: 3000,
+              ),
+              const ProductTile(
+                icon: Icons.radio_button_unchecked,
+                name: "Producto N.",
+                price: 4000,
+              ),
 
-          // Grid de categorías
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: GridView.builder(
-                itemCount: categorias.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // dos columnas
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1,
-                ),
-                itemBuilder: (context, index) {
-                  final categoria = categorias[index];
-                  return GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Abriste ${categoria['nombre']}"),
-                          backgroundColor: categoria["color"] as Color,
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      decoration: BoxDecoration(
-                        color: (categoria["color"] as Color).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: categoria["color"] as Color, width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: (categoria["color"] as Color).withOpacity(0.2),
-                            blurRadius: 6,
-                            offset: const Offset(2, 4),
-                          )
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(categoria["icono"] as IconData,
-                              size: 50, color: categoria["color"] as Color),
-                          const SizedBox(height: 12),
-                          Text(
-                            categoria["nombre"].toString(),
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: categoria["color"] as Color,
-                            ),
-                          ),
-                        ],
-                      ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  // Aquí puedes agregar navegación o acción
+                  showDialog(
+                    context: context,
+                    builder: (_) => const AlertDialog(
+                      title: Text("About me"),
+                      content: Text("Esta es la sección del vendedor."),
                     ),
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(color: Colors.black),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Text(
+                    "About me",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductTile extends StatelessWidget {
+  final IconData icon;
+  final String name;
+  final int price;
+
+  const ProductTile({
+    super.key,
+    required this.icon,
+    required this.name,
+    required this.price,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 28),
+              const SizedBox(width: 12),
+              Text(
+                name,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+          Text(
+            "\$$price",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),
